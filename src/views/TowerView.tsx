@@ -32,7 +32,7 @@ export default function TowerView({
       return;
     }
 
-    audioElement.volume = 0.12;
+    audioElement.volume = 0.03;
     audioElement.muted = isMuted;
 
     const tryPlay = () => {
