@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Award, ChevronUp, CircleUserRound, House } from 'lucide-react';
 import { RankingPlayer } from '../../types/game';
 
 type RankingProps = {
@@ -31,17 +32,25 @@ export default function Ranking({
       </aside>
 
       <section className="ranking-mobile-bar" aria-label="Barra de juego">
-        <span className="ranking-mobile-item">{currentPlayerName}</span>
-        <span className="ranking-mobile-item">Piso {currentFloor}</span>
+        <span className="ranking-mobile-item">
+          <CircleUserRound size={14} />
+          <span>{currentPlayerName}</span>
+        </span>
+        <span className="ranking-mobile-item">
+          <House size={14} />
+          <span>Piso {currentFloor}</span>
+        </span>
         <button
           type="button"
           className="ranking-mobile-button"
           onClick={() => setIsModalOpen(true)}
         >
-          Ranking
+          <Award size={14} />
+          <span>Ranking</span>
         </button>
         <button type="button" className="ranking-mobile-button profile-button">
-          Perfil
+          <ChevronUp size={14} />
+          <span>Perfil</span>
         </button>
       </section>
 
