@@ -20,11 +20,7 @@ export default function Tower({
   return (
     <section className="tower-section">
       <header className="tower-header">
-        {!completedFloors.includes(1) ? (
-          <img src={logoImage} alt="La Torre" className="tower-logo" />
-        ) : (
-          <h1 className="tower-title tower-title-hidden">La Torre</h1>
-        )}
+        <img src={logoImage} alt="La Torre" className="tower-logo" />
         <img src={fogOfWarImage} alt="" className="tower-fog tower-fog-top" aria-hidden="true" />
       </header>
 

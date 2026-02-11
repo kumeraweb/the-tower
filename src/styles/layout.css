@@ -1,10 +1,13 @@
 .App,
 .tower-view-shell {
   height: 100vh;
+  width: 100%;
+  max-width: 100vw;
   display: flex;
   gap: 20px;
   padding: 20px;
   overflow: hidden;
+  overflow-x: clip;
 }
 
 .main-content {
@@ -21,6 +24,7 @@
   border-radius: 18px;
   background-color: #1d2530;
   overflow: hidden;
+  overflow-x: clip;
   isolation: isolate;
 }
 
@@ -215,6 +219,7 @@
 .tower-section {
   position: relative;
   width: var(--tower-section-width);
+  max-width: 100%;
   height: 100%;
   background: transparent;
   text-align: center;
@@ -222,6 +227,7 @@
   flex-direction: column;
   align-items: center;
   padding: 8px 12px 12px;
+  overflow-x: clip;
 }
 
 .tower-header {
@@ -310,11 +316,13 @@
 .tower-viewport {
   position: relative;
   width: 100%;
+  max-width: 100%;
   flex: 1;
   min-height: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   overflow: hidden;
+  overflow-x: clip;
   padding-top: 4px;
 }
