@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/challengeview.tsx","./src/door.tsx","./src/floor.tsx","./src/ranking.tsx","./src/tower.tsx","./src/towerview.tsx","./src/main.tsx","./src/vite-env.d.ts"],"version":"5.9.3"}
+{"root":["./src/main.tsx","./src/vite-env.d.ts","./src/app/app.tsx","./src/components/ranking/ranking.tsx","./src/components/tower/door.tsx","./src/components/tower/floor.tsx","./src/components/tower/tower.tsx","./src/types/game.ts","./src/views/challengeview.tsx","./src/views/towerview.tsx"],"version":"5.9.3"}

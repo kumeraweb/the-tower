@@ -1,0 +1,145 @@
+.TowerContainer,
+.tower {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 8px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+  transform: translate3d(0, var(--camera-offset), 0);
+  transition: transform 0.75s ease-in-out;
+  will-change: transform;
+}
+
+.FloorCard,
+.floor {
+  position: relative;
+  width: var(--tower-floor-frame-width);
+  display: flex;
+  justify-content: center;
+  transition: filter var(--transition-fast), transform var(--transition-fast);
+}
+
+.FloorCard + .FloorCard,
+.floor + .floor {
+  margin-top: -8px;
+}
+
+.floor-base {
+  width: var(--tower-base-frame-width);
+}
+
+.floor-current {
+  transform: translateY(-1px);
+}
+
+.floor-current .floor-image {
+  filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.38));
+}
+
+.floor-image {
+  width: 100%;
+  max-width: var(--tower-floor-width);
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.floor-image-base {
+  max-width: var(--tower-base-width);
+  transform: translateY(-15%);
+}
+
+.floor-label {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #4a5a6b;
+  z-index: 2;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 4px 8px;
+}
+
+.door-anchor {
+  position: absolute;
+  top: var(--anchor-top, 55%);
+  left: var(--anchor-left, 50%);
+  width: clamp(58px, 5.8vw, 84px);
+  height: clamp(124px, 13.2vw, 186px);
+  transform: translate(-50%, -42%);
+  z-index: 4;
+}
+
+.door-anchor.anchor-center {
+  --anchor-left: 50%;
+}
+
+.door-anchor.anchor-left {
+  --anchor-left: 31%;
+}
+
+.door-anchor.anchor-base {
+  --anchor-top: 45.5%;
+}
+
+.Door,
+.door {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  z-index: 3;
+  transition:
+    transform var(--transition-fast),
+    filter var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.door-completed,
+.Door.completed {
+  background: transparent;
+}
+
+.door-blocked,
+.Door.blocked {
+  background: transparent;
+  opacity: 1;
+  box-shadow: none;
+}
+
+.door:disabled {
+  cursor: not-allowed;
+}
+
+.door-current,
+.Door.open {
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transform: perspective(320px) rotateY(-8deg);
+  box-shadow:
+    0 0 22px rgba(255, 251, 232, 0.58),
+    0 0 48px rgba(255, 248, 214, 0.42),
+    inset 0 0 26px 8px rgba(255, 255, 255, 0.3),
+    inset 0 0 64px 18px rgba(255, 248, 214, 0.24);
+  animation: door-pulse 1.8s ease-in-out infinite;
+}
+
+.door-current:hover,
+.Door.open:hover {
+  transform: perspective(320px) rotateY(-10deg) scale(1.04);
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 36px rgba(255, 251, 232, 0.9),
+    0 0 64px rgba(255, 247, 204, 0.72),
+    inset 0 0 34px 10px rgba(255, 255, 255, 0.42),
+    inset 0 0 78px 24px rgba(255, 248, 214, 0.3);
+}

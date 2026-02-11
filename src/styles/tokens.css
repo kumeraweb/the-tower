@@ -1,0 +1,41 @@
+:root {
+  --bg-top: #f5f7fa;
+  --bg-bottom: #e6ecf2;
+  --tower-surface: #e1e7ee;
+  --floor-surface: #f4f7fa;
+  --door-closed: #2f3b45;
+  --door-blocked: #9aa7b4;
+  --door-light: #ffd166;
+  --text-main: #24323d;
+  --text-muted: #617285;
+  --card-white: #ffffff;
+  --line-soft: #cfd8e3;
+  --shadow-soft: 0 8px 22px rgba(31, 53, 77, 0.08);
+  --transition-fast: 0.24s ease;
+
+  --fog-top-width: min(820px, 92%);
+  --fog-bottom-width: min(820px, 92%);
+  --fog-top-width-mobile: min(420px, 84%);
+  --fog-bottom-width-mobile: min(420px, 84%);
+  --fog-top-scale: 1.4;
+  --fog-bottom-scale: 1.4;
+
+  --tower-floor-width: clamp(300px, 32vw, 560px);
+  --tower-base-width: clamp(380px, 42vw, 760px);
+  --tower-floor-width-mobile: clamp(190px, 52vw, 320px);
+  --tower-base-width-mobile: clamp(240px, 65vw, 430px);
+
+  --tower-section-width: min(900px, 100%);
+  --tower-floor-frame-width: min(520px, 100%);
+  --tower-base-frame-width: min(800px, 100%);
+  --tower-floor-frame-width-mobile: min(320px, 100%);
+
+  --scene-avatar-x: 60%;
+  --scene-avatar-y: 0.8%;
+  --scene-avatar-x-mobile: 60%;
+  --scene-avatar-y-mobile: 0.8%;
+  --scene-avatar-width: clamp(483px, 44vw, 782px);
+  --scene-avatar-width-mobile: clamp(322px, 76vw, 483px);
+  --tower-logo-width: clamp(225px, 30vw, 425px);
+  --tower-logo-width-mobile: clamp(162px, 45vw, 275px);
+}

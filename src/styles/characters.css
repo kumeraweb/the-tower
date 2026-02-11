@@ -1,0 +1,41 @@
+.player-avatar {
+  position: absolute;
+  left: 100%;
+  bottom: var(--avatar-bottom, -2px);
+  width: var(--avatar-width, clamp(84px, 7.2vw, 126px));
+  height: var(--avatar-height, clamp(150px, 13vw, 210px));
+  object-fit: contain;
+  object-position: center bottom;
+  border-radius: 0;
+  transform: translate(var(--avatar-offset-x, 16px), var(--avatar-offset-y, 0));
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(0 7px 12px rgba(6, 10, 15, 0.48));
+}
+
+.player-avatar.avatar-type-a {
+  --avatar-offset-y: 2px;
+}
+
+.player-avatar.avatar-type-b {
+  --avatar-offset-y: -2px;
+}
+
+.player-avatar.avatar-base {
+  --avatar-width: clamp(92px, 8vw, 142px);
+  --avatar-height: clamp(158px, 14vw, 226px);
+  --avatar-offset-x: 22px;
+  --avatar-offset-y: -4px;
+}
+
+.scene-avatar-flip {
+  position: absolute;
+  left: var(--scene-avatar-x);
+  bottom: var(--scene-avatar-y);
+  width: var(--scene-avatar-width);
+  height: auto;
+  transform: translateX(-50%);
+  z-index: 9;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgba(7, 12, 18, 0.42));
+}
