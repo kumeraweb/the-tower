@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ChallengeView from '../views/ChallengeView';
 import TowerView from '../views/TowerView';
 import { FloorChallenge, RankingPlayer } from '../types/game';
@@ -39,6 +39,12 @@ export default function App() {
   const [currentFloor, setCurrentFloor] = useState(1);
   const [completedFloors, setCompletedFloors] = useState<number[]>([]);
   const [isInChallenge, setIsInChallenge] = useState(false);
+
+  useEffect(() => {
+    if (!isInChallenge) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+  }, [isInChallenge]);
 
   const rankingPlayers: RankingPlayer[] = [
     { name: 'Luna', floorReached: 10 },
