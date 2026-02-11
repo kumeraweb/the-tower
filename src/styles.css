@@ -1,0 +1,585 @@
+/*
+  Global tokens and base rules:
+  - Single sans-serif family (Inter fallback chain)
+  - Soft neutral gradient background
+  - Shared transition timing for cohesive interactions
+*/
+:root {
+  --bg-top: #f5f7fa;
+  --bg-bottom: #e6ecf2;
+  --tower-surface: #e1e7ee;
+  --floor-surface: #f4f7fa;
+  --door-closed: #2f3b45;
+  --door-blocked: #9aa7b4;
+  --door-light: #ffd166;
+  --text-main: #24323d;
+  --text-muted: #617285;
+  --card-white: #ffffff;
+  --line-soft: #cfd8e3;
+  --shadow-soft: 0 8px 22px rgba(31, 53, 77, 0.08);
+  --transition-fast: 0.24s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, 'Source Sans 3', 'Segoe UI', sans-serif;
+  color: var(--text-main);
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  overflow: hidden;
+}
+
+/*
+  Main app shell (Tower view layout):
+  sidebar at left + centered content area
+*/
+.App,
+.tower-view-shell {
+  height: 100vh;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  border-radius: 18px;
+  background-color: #1d2530;
+  background-image: url('./assets/background.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/*
+  Ranking panel:
+  white cards with subtle elevation and clear text hierarchy
+*/
+.RankingPanel,
+.ranking-sidebar {
+  width: clamp(170px, 20vw, 270px);
+  flex-shrink: 0;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(4px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ranking-sidebar h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.ranking-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.ranking-sidebar li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-white);
+  border: 1px solid #dde5ee;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(19, 37, 58, 0.06);
+  padding: 10px 12px;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.ranking-sidebar li:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(19, 37, 58, 0.09);
+}
+
+.ranking-sidebar li span {
+  font-weight: 600;
+}
+
+.ranking-sidebar li strong {
+  font-size: 0.92rem;
+  color: #415266;
+}
+
+.my-progress {
+  margin-top: auto;
+  border-radius: 12px;
+  border: 1px solid #d8e2ec;
+  background: #eef3f8;
+  padding: 10px 12px;
+  font-weight: 700;
+}
+
+/*
+  Tower block:
+  container that stacks floor images vertically with consistent spacing
+*/
+.tower-section {
+  width: min(900px, 100%);
+  height: 100%;
+  background: transparent;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+}
+
+.tower-title {
+  margin: 0 0 14px;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.tower-fog {
+  position: fixed;
+  top: var(--fog-top, -200px);
+  left: var(--fog-left, 60%);
+  width: var(--fog-width, 800px);
+  max-width: 90vw;
+  height: auto;
+  transform: translateX(-50%);
+  background: transparent;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.TowerContainer,
+.tower {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 8px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.tower-viewport {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+/*
+  Floors:
+  each floor uses an image asset instead of a CSS-generated block
+*/
+.FloorCard,
+.floor {
+  position: relative;
+  width: min(420px, 100%);
+  display: flex;
+  justify-content: center;
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.FloorCard + .FloorCard,
+.floor + .floor {
+  margin-top: -8px;
+}
+
+.floor-base {
+  width: min(800px, 100%);
+}
+
+.floor-current {
+  transform: translateY(-1px);
+}
+
+.floor-current .floor-image {
+  filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.38));
+}
+
+.floor-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.floor-image-base {
+  max-width: 520px;
+}
+
+.floor-label {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #4a5a6b;
+  z-index: 2;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 4px 8px;
+}
+
+.player-avatar {
+  position: absolute;
+  top: var(--avatar-top, 55%);
+  left: var(--avatar-left, 50%);
+  width: var(--avatar-width, clamp(76px, 7vw, 120px));
+  height: var(--avatar-height, clamp(130px, 12vw, 190px));
+  object-fit: contain;
+  object-position: center bottom;
+  border-radius: 0;
+  transform: translate(
+    calc(-50% + var(--avatar-offset-x, 84px)),
+    calc(-50% + var(--avatar-offset-y, 14px))
+  );
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(0 7px 12px rgba(6, 10, 15, 0.48));
+}
+
+.player-avatar.avatar-center {
+  --avatar-left: 50%;
+  --avatar-offset-x: 84px;
+}
+
+.player-avatar.avatar-type-a {
+  --avatar-offset-y: 12px;
+}
+
+.player-avatar.avatar-left {
+  --avatar-left: 31%;
+  --avatar-offset-x: 72px;
+}
+
+.player-avatar.avatar-type-b {
+  --avatar-offset-y: 10px;
+}
+
+.player-avatar.avatar-base {
+  --avatar-top: 40%;
+  --avatar-width: clamp(86px, 8vw, 136px);
+  --avatar-height: clamp(144px, 14vw, 220px);
+  --avatar-offset-x: 98px;
+  --avatar-offset-y: 6px;
+}
+
+/*
+  Door styles:
+  - completed: dark and closed
+  - blocked: light/semi-transparent
+  - current (.Door.open): brighter with yellow opening glow using pseudo-element
+*/
+.Door,
+.door {
+  position: absolute;
+  top: 55%;
+  left: var(--door-left, 50%);
+  width: clamp(58px, 5.8vw, 84px);
+  height: clamp(124px, 13.2vw, 186px);
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  transform: translate(-50%, -42%);
+  z-index: 3;
+  transition:
+    transform var(--transition-fast),
+    filter var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.Door.align-center,
+.door.align-center {
+  --door-left: 50%;
+}
+
+.Door.align-left,
+.door.align-left {
+  --door-left: 31%;
+}
+
+.Door.base-door,
+.door.base-door {
+  top: 45.5%;
+}
+
+.door-completed,
+.Door.completed {
+  background: transparent;
+}
+
+.door-blocked,
+.Door.blocked {
+  background: transparent;
+  opacity: 1;
+  box-shadow: none;
+}
+
+.door:disabled {
+  cursor: not-allowed;
+}
+
+.door-current,
+.Door.open {
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transform: translate(-50%, -42%) perspective(320px) rotateY(-8deg);
+  box-shadow:
+    0 0 22px rgba(255, 251, 232, 0.58),
+    0 0 48px rgba(255, 248, 214, 0.42),
+    inset 0 0 26px 8px rgba(255, 255, 255, 0.3),
+    inset 0 0 64px 18px rgba(255, 248, 214, 0.24);
+  animation: door-pulse 1.8s ease-in-out infinite;
+}
+
+.door-current:hover,
+.Door.open:hover {
+  transform: translate(-50%, -42%) perspective(320px) rotateY(-10deg) scale(1.04);
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 36px rgba(255, 251, 232, 0.9),
+    0 0 64px rgba(255, 247, 204, 0.72),
+    inset 0 0 34px 10px rgba(255, 255, 255, 0.42),
+    inset 0 0 78px 24px rgba(255, 248, 214, 0.3);
+}
+
+@keyframes door-pulse {
+  0% {
+    box-shadow:
+      0 0 16px rgba(255, 251, 232, 0.46),
+      0 0 36px rgba(255, 248, 214, 0.3),
+      inset 0 0 18px 6px rgba(255, 255, 255, 0.2),
+      inset 0 0 50px 12px rgba(255, 248, 214, 0.18);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(255, 251, 232, 0.78),
+      0 0 56px rgba(255, 248, 214, 0.56),
+      inset 0 0 30px 10px rgba(255, 255, 255, 0.36),
+      inset 0 0 74px 22px rgba(255, 248, 214, 0.28);
+  }
+
+  100% {
+    box-shadow:
+      0 0 16px rgba(255, 251, 232, 0.46),
+      0 0 36px rgba(255, 248, 214, 0.3),
+      inset 0 0 18px 6px rgba(255, 255, 255, 0.2),
+      inset 0 0 50px 12px rgba(255, 248, 214, 0.18);
+  }
+}
+
+/*
+  Fullscreen challenge view:
+  neutral centered layout with clean input and consistent button language
+*/
+.ChallengeView,
+.challenge-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: linear-gradient(180deg, #f2f5f8 0%, #e9eff5 100%);
+}
+
+.challenge-card {
+  width: min(500px, 100%);
+  border-radius: 16px;
+  border: 1px solid var(--line-soft);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.challenge-card h2,
+.challenge-subtitle,
+.challenge-question,
+.challenge-feedback {
+  margin: 0;
+}
+
+.challenge-card h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.challenge-subtitle {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.challenge-question {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.challenge-form {
+  display: flex;
+  gap: 10px;
+}
+
+.challenge-form input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid #aebdcb;
+  border-radius: 0;
+  padding: 12px 6px;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--text-main);
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.challenge-form input:focus {
+  border-bottom-color: #5e7388;
+  box-shadow: 0 8px 14px -10px rgba(45, 70, 97, 0.7);
+}
+
+.challenge-form button {
+  border: 0;
+  border-radius: 10px;
+  background: #3e556d;
+  color: #fff;
+  font-size: 0.97rem;
+  font-weight: 700;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.challenge-form button:hover {
+  transform: translateY(-1px);
+  background: #2f465e;
+  box-shadow: 0 8px 14px rgba(30, 47, 65, 0.22);
+}
+
+.challenge-feedback {
+  min-height: 22px;
+  font-weight: 700;
+  color: #394a5b;
+}
+
+/*
+  Responsive collapse:
+  stack ranking above tower on smaller screens
+*/
+@media (max-width: 840px) {
+  .RankingPanel,
+  .ranking-sidebar {
+    width: clamp(122px, 28vw, 180px);
+    padding: 10px;
+    top: 10px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.58);
+    backdrop-filter: blur(2px);
+  }
+
+  .App,
+  .tower-view-shell {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .ranking-sidebar h2 {
+    font-size: 1rem;
+  }
+
+  .ranking-sidebar li {
+    padding: 8px 9px;
+  }
+
+  .ranking-sidebar li span,
+  .ranking-sidebar li strong {
+    font-size: 0.88rem;
+  }
+
+  .my-progress {
+    padding: 8px 9px;
+    font-size: 0.95rem;
+  }
+
+  .tower-section {
+    width: 100%;
+    padding: 8px 6px;
+  }
+
+  .tower-fog {
+    left: var(--fog-left-mobile, 60%);
+    width: var(--fog-width-mobile, 62vw);
+  }
+
+  .player-avatar {
+    --avatar-width: clamp(58px, 14vw, 88px);
+    --avatar-height: clamp(96px, 24vw, 138px);
+    --avatar-offset-x: 54px;
+    --avatar-offset-y: 10px;
+  }
+
+  .player-avatar.avatar-left {
+    --avatar-offset-x: 50px;
+  }
+
+  .player-avatar.avatar-base {
+    --avatar-width: clamp(66px, 16vw, 98px);
+    --avatar-height: clamp(110px, 28vw, 156px);
+    --avatar-offset-x: 60px;
+    --avatar-offset-y: 2px;
+  }
+
+  .challenge-form {
+    flex-direction: column;
+  }
+}
