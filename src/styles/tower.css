@@ -1,39 +1,39 @@
 .TowerContainer,
 .tower {
+  position: absolute;
+  top: 0;
+  left: 50%;
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  padding: 8px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  align-items: center;
-  transform: translate3d(0, var(--camera-offset), 0);
+  width: var(--tower-base-frame-width);
+  max-width: 100%;
+  padding: 0;
+  display: block;
   transition: transform 0.75s ease-in-out;
   will-change: transform;
+  pointer-events: none;
 }
 
 .FloorCard,
 .floor {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   width: var(--tower-floor-frame-width);
   display: flex;
   justify-content: center;
-  transition: filter var(--transition-fast), transform var(--transition-fast);
-}
+  pointer-events: auto;
 
-.FloorCard + .FloorCard,
-.floor + .floor {
-  margin-top: -8px;
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .floor-base {
   width: var(--tower-base-frame-width);
-}
-
-.floor-current {
-  transform: translateY(-1px);
+  border-color: rgba(60, 120, 255, 0.82);
 }
 
 .floor-current .floor-image {
@@ -71,10 +71,37 @@
   position: absolute;
   top: var(--anchor-top, 55%);
   left: var(--anchor-left, 50%);
-  width: clamp(58px, 5.8vw, 84px);
-  height: clamp(124px, 13.2vw, 186px);
+  width: clamp(60px, 60px, 10px);
+  height: clamp(40px, 100px, 186px);
   transform: translate(-50%, -42%);
   z-index: 4;
+}
+
+.door-anchor.is-current::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 220%;
+  height: 260%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 251, 232, 0.38) 0%,
+    rgba(255, 248, 214, 0.2) 46%,
+    rgba(255, 248, 214, 0) 78%
+  );
+  filter: blur(24px);
+  opacity: 0.82;
+  pointer-events: none;
+  z-index: 2;
+  animation: door-aura-pulse 1.8s ease-in-out infinite;
+}
+
+.door-anchor.is-current:hover::after {
+  opacity: 0.96;
+  filter: blur(26px);
 }
 
 .door-anchor.anchor-center {
@@ -82,18 +109,22 @@
 }
 
 .door-anchor.anchor-left {
-  --anchor-left: 31%;
+  --anchor-left: 37%;
+}
+
+.door-anchor.anchor-right {
+  --anchor-left: 67%;
 }
 
 .door-anchor.anchor-base {
-  --anchor-top: 45.5%;
+  --anchor-top: 30.5%;
 }
 
 .Door,
 .door {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 999px;
   border: none;
   background: transparent;
   z-index: 3;
@@ -122,24 +153,16 @@
 
 .door-current,
 .Door.open {
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
   cursor: pointer;
-  transform: perspective(320px) rotateY(-8deg);
-  box-shadow:
-    0 0 22px rgba(255, 251, 232, 0.58),
-    0 0 48px rgba(255, 248, 214, 0.42),
-    inset 0 0 26px 8px rgba(255, 255, 255, 0.3),
-    inset 0 0 64px 18px rgba(255, 248, 214, 0.24);
-  animation: door-pulse 1.8s ease-in-out infinite;
+  transform: scale(1.02);
+  box-shadow: none;
+  animation: none;
 }
 
 .door-current:hover,
 .Door.open:hover {
-  transform: perspective(320px) rotateY(-10deg) scale(1.04);
+  transform: scale(1.05);
   filter: brightness(1.08);
-  box-shadow:
-    0 0 36px rgba(255, 251, 232, 0.9),
-    0 0 64px rgba(255, 247, 204, 0.72),
-    inset 0 0 34px 10px rgba(255, 255, 255, 0.42),
-    inset 0 0 78px 24px rgba(255, 248, 214, 0.3);
+  box-shadow: none;
 }

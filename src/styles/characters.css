@@ -2,23 +2,34 @@
   position: absolute;
   left: 100%;
   bottom: var(--avatar-bottom, -2px);
-  width: var(--avatar-width, clamp(84px, 7.2vw, 126px));
-  height: var(--avatar-height, clamp(150px, 13vw, 210px));
+  width: var(--avatar-width, clamp(64px, 5.6vw, 96px));
+  height: var(--avatar-height, clamp(114px, 9.6vw, 160px));
   object-fit: contain;
   object-position: center bottom;
   border-radius: 0;
-  transform: translate(var(--avatar-offset-x, 16px), var(--avatar-offset-y, 0));
+  transform: translate(var(--avatar-offset-x, 12px), var(--avatar-offset-y, 0));
   z-index: 5;
   pointer-events: none;
   filter: drop-shadow(0 7px 12px rgba(6, 10, 15, 0.48));
 }
 
-.player-avatar.avatar-type-a {
-  --avatar-offset-y: 2px;
+.player-avatar.avatar-type-center {
+  --avatar-offset-y: 1px;
 }
 
-.player-avatar.avatar-type-b {
-  --avatar-offset-y: -2px;
+.player-avatar.avatar-type-left {
+  --avatar-offset-y: -1px;
+}
+
+.player-avatar.avatar-type-right {
+  left: 0;
+  --avatar-offset-y: -1px;
+  transform: translate(calc(-100% - 10px), var(--avatar-offset-y, 0));
+}
+
+.player-avatar.avatar-variant-front {
+  --avatar-width: clamp(58px, 5vw, 86px);
+  --avatar-height: clamp(104px, 8.6vw, 148px);
 }
 
 .player-avatar.avatar-base {

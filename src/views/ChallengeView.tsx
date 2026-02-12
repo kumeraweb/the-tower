@@ -7,6 +7,8 @@ type ChallengeViewProps = {
   onIncorrectAnswer: () => void;
 };
 
+const DEBUG_ALWAYS_SUCCESS = true;
+
 export default function ChallengeView({
   challenge,
   onCorrectAnswer,
@@ -17,6 +19,16 @@ export default function ChallengeView({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (DEBUG_ALWAYS_SUCCESS) {
+      setFeedback('Debug: respuesta validada. Subiendo al siguiente piso...');
+
+      setTimeout(() => {
+        onCorrectAnswer();
+      }, 450);
+
+      return;
+    }
 
     const numericAnswer = Number(answer);
 
@@ -35,6 +47,13 @@ export default function ChallengeView({
     setTimeout(() => {
       onIncorrectAnswer();
     }, 900);
+  }
+
+  function handleDebugAdvance() {
+    setFeedback('Debug: avance manual al siguiente piso...');
+    setTimeout(() => {
+      onCorrectAnswer();
+    }, 250);
   }
 
   return (
@@ -56,6 +75,9 @@ export default function ChallengeView({
             required
           />
           <button type="submit">Confirmar</button>
+          <button type="button" onClick={handleDebugAdvance}>
+            Avanzar (Debug)
+          </button>
         </form>
 
         {feedback ? <p className="challenge-feedback">{feedback}</p> : null}

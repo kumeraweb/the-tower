@@ -3,7 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react';
 import Tower from '../components/tower/Tower';
 import Ranking from '../components/ranking/Ranking';
 import fogOfWarImage from '../assets/fog-of-war.png';
-import avatarFlipImage from '../assets/avatar-flip.png';
+import avatarBackImage from '../assets/avatar-back.png';
 import { RankingPlayer } from '../types/game';
 
 type TowerViewProps = {
@@ -21,10 +21,13 @@ export default function TowerView({
   rankingPlayers,
   onFloorClick,
 }: TowerViewProps) {
-  const floorIndex = Math.max(0, Math.min(currentFloor - 1, totalFloors - 1));
-  const mainContentStyle = { '--floor-index': floorIndex } as CSSProperties;
+  const mainContentRef = useRef<HTMLElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    typeof window !== 'undefined' ? window.innerWidth <= 840 : false,
+  );
 
   useEffect(() => {
     const audioElement = audioRef.current;
@@ -58,6 +61,48 @@ export default function TowerView({
     };
   }, [isMuted]);
 
+  useEffect(() => {
+    const contentElement = mainContentRef.current;
+    if (!contentElement) {
+      return;
+    }
+
+    const updateHeight = () => {
+      setViewportHeight(contentElement.clientHeight);
+    };
+
+    updateHeight();
+
+    const observer = new ResizeObserver(() => updateHeight());
+    observer.observe(contentElement);
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
+  const floorProgress = Math.max(0, currentFloor - 1);
+  const atmosphereStrength = Math.min(0.38, 0.06 + floorProgress * 0.004);
+  const mainContentStyle = {
+    '--floor-progress': floorProgress,
+    '--atmosphere-strength': atmosphereStrength,
+  } as CSSProperties;
+
+  useEffect(() => {
+    const updateViewportType = () => {
+      setIsMobileViewport(window.innerWidth <= 840);
+    };
+
+    updateViewportType();
+    window.addEventListener('resize', updateViewportType);
+
+    return () => {
+      window.removeEventListener('resize', updateViewportType);
+    };
+  }, []);
+
   return (
     <div className="App tower-view-shell">
       <Ranking
@@ -66,7 +111,7 @@ export default function TowerView({
         currentPlayerName="Javier"
       />
 
-      <main className="main-content" style={mainContentStyle}>
+      <main ref={mainContentRef} className="main-content" style={mainContentStyle}>
         <audio ref={audioRef} src="/audio/tower-ambient.mp3" loop preload="auto" />
         <button
           type="button"
@@ -81,8 +126,9 @@ export default function TowerView({
         <div className="parallax-layer parallax-sky" aria-hidden="true" />
         <div className="parallax-layer parallax-hills" aria-hidden="true" />
         <div className="parallax-layer parallax-trees" aria-hidden="true" />
+        <div className="atmosphere-overlay" aria-hidden="true" />
         {!completedFloors.includes(1) ? (
-          <img src={avatarFlipImage} alt="Avatar en el suelo" className="scene-avatar-flip" />
+          <img src={avatarBackImage} alt="Avatar en el suelo" className="scene-avatar-flip" />
         ) : null}
         {currentFloor > 1 ? (
           <img src={fogOfWarImage} alt="" className="scene-fog-bottom" aria-hidden="true" />
@@ -93,6 +139,8 @@ export default function TowerView({
           totalFloors={totalFloors}
           currentFloor={currentFloor}
           completedFloors={completedFloors}
+          viewportHeight={viewportHeight}
+          floorHeight={isMobileViewport ? 88 : 116}
           onFloorClick={onFloorClick}
         />
         </div>

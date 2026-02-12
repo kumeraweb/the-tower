@@ -4,14 +4,23 @@
   display: grid;
   place-items: center;
   padding: 20px;
-  background: linear-gradient(180deg, #f2f5f8 0%, #e9eff5 100%);
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(2, 4, 8, 0.62) 0%,
+      rgba(2, 4, 8, 0.78) 100%
+    ),
+    url('../assets/background-room.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .challenge-card {
   width: min(500px, 100%);
-  border-radius: 16px;
-  border: 1px solid var(--line-soft);
-  background: rgba(255, 255, 255, 0.84);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(7, 11, 17, 0.76);
   box-shadow: var(--shadow-soft);
   padding: 24px;
   display: flex;
@@ -30,16 +39,20 @@
 .challenge-card h2 {
   font-size: 1.6rem;
   font-weight: 800;
+  color: #f6f9ff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .challenge-subtitle {
-  color: var(--text-muted);
+  color: #d6deea;
   font-weight: 600;
 }
 
 .challenge-question {
   font-size: 1.05rem;
   font-weight: 700;
+  color: #f0f5ff;
 }
 
 .challenge-form {
@@ -49,43 +62,47 @@
 
 .challenge-form input {
   flex: 1;
-  background: transparent;
-  border: 0;
-  border-bottom: 2px solid #aebdcb;
-  border-radius: 0;
-  padding: 12px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 12px 10px;
   font-size: 1rem;
   text-align: center;
-  color: var(--text-main);
+  color: #f7fbff;
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .challenge-form input:focus {
-  border-bottom-color: #5e7388;
-  box-shadow: 0 8px 14px -10px rgba(45, 70, 97, 0.7);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
 }
 
 .challenge-form button {
-  border: 0;
-  border-radius: 10px;
-  background: #3e556d;
-  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f7fbff;
   font-size: 0.97rem;
   font-weight: 700;
   padding: 10px 16px;
   cursor: pointer;
-  transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .challenge-form button:hover {
   transform: translateY(-1px);
-  background: #2f465e;
-  box-shadow: 0 8px 14px rgba(30, 47, 65, 0.22);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.28);
 }
 
 .challenge-feedback {
   min-height: 22px;
   font-weight: 700;
-  color: #394a5b;
+  color: #e8effc;
 }

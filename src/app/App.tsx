@@ -3,7 +3,7 @@ import ChallengeView from '../views/ChallengeView';
 import TowerView from '../views/TowerView';
 import { FloorChallenge, RankingPlayer } from '../types/game';
 
-const TOTAL_FLOORS = 10;
+const TOTAL_FLOORS = 100;
 
 function buildChallenges(totalFloors: number): FloorChallenge[] {
   return Array.from({ length: totalFloors }, (_, index) => {
